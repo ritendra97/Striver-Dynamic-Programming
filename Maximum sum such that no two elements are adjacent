@@ -1,0 +1,112 @@
+public class Main {
+
+    public static int rec(int nums[], int idx,int N) {
+        if(idx==0) return 0;
+
+        if(idx<0) return 0;
+
+        int pick = nums[idx]+rec(nums,idx-2,N);
+        int nonPick = 0+rec(nums,idx-1,N);
+
+        return Math.max(pick,nonPick);
+    }
+
+    public static int findMaxSum(int[] arr, int N) {
+        return rec(arr, N-1, N);
+    }
+
+    public static void main(String [] args){
+        int[] arr = { 5, 5, 10, 100, 10, 5 };
+        int N = 6;
+        System.out.println(findMaxSum(arr, N));
+    }
+}
+
+
+Optimized
+
+    public class Main {
+
+        public static int rec(int nums[], int idx,int N, int dp[]) {
+            if(idx==0) return 0;
+
+            if(idx<0) return 0;
+                
+            if(dp[idx]!=-1) return dp[idx];
+            
+            int pick = nums[idx]+rec(nums,idx-2,N, dp);
+            int nonPick = 0+rec(nums,idx-1,N, dp);
+
+            return dp[idx] = Math.max(pick,nonPick);
+        }
+
+        public static int findMaxSum(int[] arr, int N, int dp[]) {
+            return rec(arr, N-1, N, dp);
+        }
+
+        public static void main(String [] args){
+            int[] arr = { 5, 5, 10, 100, 10, 5 };
+            int N = 6;
+            int dp[] = new int[N];
+            System.out.println(findMaxSum(arr, N,dp));
+        }
+    }
+
+    public class Main {
+
+        public static int findMaxSum(int[] arr, int N, int dp[]) {
+            dp[0] = arr[0];
+
+            for(int i = 1;i<N;i++){
+
+                int take = arr[i];
+                if(i>1){
+                    take+=dp[i-2];
+                }
+
+                int nonTake = 0+dp[i-1];
+
+                dp[i] = Math.max(take, nonTake);
+            }
+            return dp[N-1];
+        }
+
+        public static void main(String [] args){
+            int[] arr = { 5, 5, 10, 100, 10, 5 };
+            int N = 6;
+            int dp[] = new int[N];
+            System.out.println(findMaxSum(arr, N,dp));
+        }
+    }
+
+
+    public class Main {
+
+        public static int findMaxSum(int[] arr, int N, int dp[]) {
+
+            int prev2= 0;
+            int prev = arr[0];
+            int curr = 0;
+            for(int i = 1;i<N;i++){
+
+                int take = arr[i];
+                if(i>1){
+                    take+=prev2;
+                }
+
+                int nonTake = 0+prev;
+
+                curr = Math.max(take, nonTake);
+                prev2 = prev;
+                prev = curr;
+            }
+            return prev;
+        }
+
+        public static void main(String [] args){
+            int[] arr = { 5, 5, 10, 100, 10, 5 };
+            int N = 6;
+            int dp[] = new int[N];
+            System.out.println(findMaxSum(arr, N,dp));
+        }
+    }
