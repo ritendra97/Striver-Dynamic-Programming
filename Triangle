@@ -1,0 +1,24 @@
+public class Main {
+
+    public static int helper(int[][] triangle ,int i, int j){
+
+        if(i==triangle.length) return triangle[i][j];
+
+        int d = triangle[i][j]+helper(triangle,i+1,j);
+        int dt = triangle[i][j]+helper(triangle,i+1,j+1);
+
+        return Math.min(d,dt);
+    }
+    public static int minimumTotal(int[][] triangle) {
+        return helper(triangle,0,0);
+    }
+
+    public static void main(String[] args) {
+
+        int triangle[][] = {{2},
+                            {3,4},
+                            {6,5,7},
+                            {4,1,8,3}};
+        System.out.println(minimumTotal(triangle));
+    }
+}
