@@ -1,0 +1,70 @@
+public class Main {
+
+    public static int helper(int set[], int n, int val){
+
+        if(val==0) return 1;
+
+        if(n==0) {
+            if(val==0) {
+                return 1;
+            }else {
+                return 0;
+            }
+        }
+
+        int nonPick = helper(set, n-1, val);
+
+        int pick = 0;
+
+        if(set[n]<=val){
+            pick = helper(set, n-1, val-set[n]);
+        }
+
+        return pick+nonPick;
+    }
+
+    public static void printSubsetsCount(int set[], int n, int val) {
+        int count = helper(set, n-1, val);
+        System.out.println(count);
+    }
+
+    public static void main(String[] args) {
+        int set[] = { 1, 2, 3, 4, 5 };
+        printSubsetsCount(set, 5, 9);
+    }
+}
+
+
+
+public class Main {
+
+    public static void printSubsetsCount(int set[], int n, int val) {
+        int dp[][] = new int[n][val+1];
+
+        for(int i = 0;i<n;i++){
+            dp[i][0] = 1;
+        }
+
+        if(set[0]<=val) dp[0][set[0]]=1;
+
+        for(int ind = 1;ind<n;ind++){
+
+            for (int target=0;target<=val;target++){
+
+                int nonPick = dp[ind-1][target];
+                int pick = 0;
+                if(set[ind]<=val){
+                    pick = dp[ind-1][val-set[ind]];
+                }
+                dp[ind][target] = pick+nonPick;
+            }
+        }
+
+        System.out.println(dp[n-1][val]);
+    }
+
+    public static void main(String[] args) {
+        int set[] = { 1, 2, 3, 4, 5 };
+        printSubsetsCount(set, 5, 9);
+    }
+}
