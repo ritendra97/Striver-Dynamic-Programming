@@ -1,0 +1,62 @@
+public class Main {
+
+    public static int helper(int i, int j,int[][] matrix){
+
+        if(j<0 || j>=matrix.length) return Integer.MIN_VALUE;
+
+        if(i==0) return matrix[i][j];
+
+        int d = matrix[i][j]+helper(i-1,j,matrix);
+        int dl = matrix[i][j]+helper(i-1,j-1,matrix);
+        int dr = matrix[i][j]+helper(i-1,j+1,matrix);
+
+        return Math.max(d,Math.max(dl,dr));
+    }
+
+    public static int maximumFallingPath(int[][] matrix) {
+        int n = matrix.length-1;
+        int m = matrix[0].length-1;
+        return helper(n,m,matrix);
+    }
+
+    public static void main(String[] args) {
+
+        int matrix[][] = {{2,1,3},
+                          {6,5,4},
+                          {7,8,9}};
+        System.out.println(maximumFallingPath(matrix));
+    }
+}
+
+
+class Solution {
+
+    public int minFallingPathSum(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int dp[][] = new int[n][m];
+
+        for(int j = 0;j<m;j++){
+            dp[0][j] = matrix[0][j];
+        }
+
+        for(int i = 1;i<n;i++){
+            for(int j =0;j<m;j++){
+                
+                int ls = j>0 ? matrix[i][j]+dp[i-1][j-1]:Integer.MAX_VALUE;
+                int rs = j<m-1 ? matrix[i][j]+dp[i-1][j+1]:Integer.MAX_VALUE;
+                int ms = matrix[i][j]+dp[i-1][j];
+
+                dp[i][j] = Math.min(ls, Math.min(rs,ms));
+            }
+        }
+        int min_ans = Integer.MAX_VALUE;
+
+        for(int i = 0;i<m;i++){
+            min_ans = Math.min(min_ans,dp[m-1][i]);
+        }
+
+        return min_ans;
+    }
+}
